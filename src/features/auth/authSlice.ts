@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { User } from "../../utils/type";
 import { loginUser } from "./authAPI";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { tokenScheduler } from "../../utils/tokenScheduler";
 
 interface AuthState {
   user: User | null;
@@ -28,6 +29,7 @@ export const login = createAsyncThunk<
       ["refreshToken", data.refreshToken],
       ["user", JSON.stringify(data)],
     ]);
+    tokenScheduler.start();
 
     return data;
   } catch (err: any) {
@@ -47,6 +49,7 @@ export const loadUser = createAsyncThunk<User | null>(
     console.log(userStr);
 
     if (userStr) {
+      tokenScheduler.start();
       return JSON.parse(userStr) as User;
     }
     return null;
@@ -56,6 +59,7 @@ export const loadUser = createAsyncThunk<User | null>(
 //  logout thunk (clear AsyncStorage)
 export const logout = createAsyncThunk("auth/logout", async () => {
   await AsyncStorage.multiRemove(["accessToken", "refreshToken", "user"]);
+  tokenScheduler.stop();
 });
 
 //
