@@ -46,8 +46,6 @@ export const loadUser = createAsyncThunk<User | null>(
   "auth/loadUser",
   async () => {
     const userStr = await AsyncStorage.getItem("user");
-    console.log(userStr);
-
     if (userStr) {
       tokenScheduler.start();
       return JSON.parse(userStr) as User;

@@ -1,9 +1,17 @@
 import React, { useEffect } from "react";
-import { View, Text, Image, ActivityIndicator, ScrollView } from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  ActivityIndicator,
+  ScrollView,
+  TouchableOpacity,
+} from "react-native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { fetchProductById } from "../../features/products/productsSlice";
 import { COLORS } from "../../utils/colors";
+import { openModal } from "../../features/modal/modalSlice";
 
 interface Props extends NativeStackScreenProps<any, any> {}
 
@@ -52,6 +60,18 @@ export default function ProductDetails({ route }: Props) {
       <Text style={{ fontSize: 20, fontWeight: "700" }}>{product.title}</Text>
       <Text>${product.price}</Text>
       <Text style={{ color: COLORS.gray }}>{product.description}</Text>
+      <TouchableOpacity
+        onPress={() =>
+          dispatch(
+            openModal({
+              modalType: "EDIT_PRODUCT",
+              modalProps: { id: id, title: product.title },
+            })
+          )
+        }
+      >
+        <Text style={{ color: COLORS.primary, fontWeight: "600" }}>Edit</Text>
+      </TouchableOpacity>
     </ScrollView>
   );
 }

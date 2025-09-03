@@ -61,6 +61,21 @@ export const fetchProductById = createAsyncThunk<
   }
 });
 
+export const editProduct = createAsyncThunk<
+  Product,
+  { id: number; changes: Partial<Product> },
+  { rejectValue: string }
+>("products/editById", async ({ id, changes }, { rejectWithValue }) => {
+  try {
+    const { data } = await api.patch<Product>(`/products/${id}`, changes);
+    return data;
+  } catch (e: any) {
+    return rejectWithValue(
+      e?.response?.data?.message || "Failed to update the product"
+    );
+  }
+});
+
 const productsSlice = createSlice({
   name: "products",
   initialState,
@@ -116,6 +131,14 @@ const productsSlice = createSlice({
       .addCase(fetchProductById.fulfilled, (state, action) => {
         state.byId[action.payload.id] = action.payload;
         state.loading = false;
+      })
+      .addCase(editProduct.fulfilled, (state, action) => {
+        const updated = action.payload;
+        // update list if present
+        const idx = state.items.findIndex((p) => p.id === updated.id);
+        if (idx >= 0) state.items[idx] = updated;
+        // update byId cache
+        state.byId[updated.id] = updated;
       });
   },
 });
