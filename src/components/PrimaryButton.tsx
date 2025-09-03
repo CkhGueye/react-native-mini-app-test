@@ -1,4 +1,9 @@
-import { StyleSheet, Text, TouchableOpacity } from "react-native";
+import {
+  ActivityIndicator,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+} from "react-native";
 import React from "react";
 import { COLORS } from "../utils/colors";
 
@@ -15,7 +20,7 @@ const PrimaryButton = ({
     {!loading ? (
       <Text style={styles.primaryBtnText}>{label}</Text>
     ) : (
-      <Text style={styles.primaryBtnText}>Loading...</Text>
+      <ActivityIndicator color={COLORS.white} />
     )}
   </TouchableOpacity>
 );
@@ -25,7 +30,7 @@ export default PrimaryButton;
 const styles = StyleSheet.create({
   primaryBtn: {
     backgroundColor: COLORS.primary,
-    paddingVertical: 15,
+    padding: 15,
     borderRadius: 10,
     alignItems: "center",
     marginTop: 10,

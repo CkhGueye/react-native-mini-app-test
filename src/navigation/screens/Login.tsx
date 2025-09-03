@@ -7,6 +7,7 @@ import PrimaryButton from "../../components/PrimaryButton";
 import LoginFooter from "../../components/LoginFooter";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { login } from "../../features/auth/authSlice";
+import { COLORS } from "../../utils/colors";
 
 export default function Login() {
   const dispatch = useAppDispatch();
@@ -40,7 +41,7 @@ export default function Login() {
 
       {error && (
         <View style={{ marginVertical: 0 }}>
-          <Text style={{ color: "red" }}>{error}</Text>
+          <Text style={{ color: COLORS.error }}>{error}</Text>
         </View>
       )}
 

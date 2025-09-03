@@ -55,7 +55,7 @@ API.interceptors.response.use(
         originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
         return API(originalRequest);
       } catch (refreshError) {
-        await AsyncStorage.multiRemove(["accessToken", "refreshToken"]);
+        await AsyncStorage.multiRemove(["accessToken", "refreshToken", "user"]);
         return Promise.reject(refreshError);
       }
     }
